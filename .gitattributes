@@ -1,1 +1,19 @@
+# Track datasets
+*.csv filter=lfs diff=lfs merge=lfs
+*.json filter=lfs diff=lfs merge=lfs
+*.parquet filter=lfs diff=lfs merge=lfs
+
+# Track embeddings
+*.pkl filter=lfs diff=lfs merge=lfs
+*.npy filter=lfs diff=lfs merge=lfs
+# Track model weights
+*.bin filter=lfs diff=lfs merge=lfs
+*.pt filter=lfs diff=lfs merge=lfs
+*.pth filter=lfs diff=lfs merge=lfs
+*.ckpt filter=lfs diff=lfs merge=lfs
+*.h5 filter=lfs diff=lfs merge=lfs
+*.msgpack filter=lfs diff=lfs merge=lfs
+# Track large tokenizer/vocab files
+tokenizer.json filter=lfs diff=lfs merge=lfs
+vocab.txt filter=lfs diff=lfs merge=lfs
 *.json !text !filter !merge !diff
