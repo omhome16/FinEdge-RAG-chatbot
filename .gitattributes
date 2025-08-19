@@ -2,6 +2,7 @@
 *.csv filter=lfs diff=lfs merge=lfs
 *.json filter=lfs diff=lfs merge=lfs
 *.parquet filter=lfs diff=lfs merge=lfs
+*.pdf filter=lfs diff=lfs merge=lfs
 
 # Track embeddings
 *.pkl filter=lfs diff=lfs merge=lfs
