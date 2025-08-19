@@ -1,54 +1,70 @@
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.runnables import RunnableParallel, RunnablePassthrough
+from langchain_community.vectorstores import FAISS
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain.prompts import PromptTemplate
+from langchain.chains import ConversationalRetrievalChain
 from langchain_google_genai import ChatGoogleGenerativeAI
-from .retriever import get_retriever
+from langchain.memory import ConversationBufferMemory
 from dotenv import load_dotenv
 
 load_dotenv()
 
 
-def format_docs(docs):
-    """Helper function to format documents for the context."""
-    return "\n\n".join(doc.page_content for doc in docs)
+def get_retriever(index_path="vectorstore/fintech_index"):
+    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+    vectorstore = FAISS.load_local(
+        index_path,
+        embeddings,
+        allow_dangerous_deserialization=True  # Ensure you trust the source of the index
+    )
+    retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 5})
+    return retriever
 
 
 def get_rag_chain():
+
     retriever = get_retriever()
 
     template = """
-    You are a professional financial assistant. 
-    Answer the user query ONLY using the provided context.
-    If the answer is not in the documents, say "The provided documents do not contain an answer."
-    Always cite the document name and page number in the answer.
+    You are a highly knowledgeable financial analyst AI. Your role is to provide precise and professional answers based on the provided documents.
 
-    Context:
+    Follow these rules:
+    1.  Analyze the conversation history and the new question to understand the user's intent.
+    2.  Answer the question using ONLY the context from the documents.
+    3.  If the answer is not found in the context, state clearly: "I could not find information regarding this in the provided documents." Do not try to make up an answer.
+    4.  Cite the source document and page number for your answer. Format citations as [source, page X].
+    5.  Maintain a professional and formal tone throughout the conversation.
+
+    Conversation History:
+    {chat_history}
+
+    Context from Documents:
     {context}
 
     Question:
     {question}
 
-    Answer:
+    Professional Answer:
     """
-    prompt = ChatPromptTemplate.from_template(template)
 
-    # Use Google's Gemini model
-    llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash-latest")
-
-    # This is the modern LCEL (LangChain Expression Language) way to build chains
-    rag_chain_from_docs = (
-            {
-                "context": lambda input: format_docs(input["documents"]),
-                "question": lambda input: input["question"],
-            }
-            | prompt
-            | llm
-            | StrOutputParser()
+    prompt = PromptTemplate(
+        input_variables=["chat_history", "context", "question"],
+        template=template
     )
 
-    # This chain retrieves documents and then passes them to the generation chain
-    rag_chain_with_source = RunnableParallel(
-        {"documents": retriever, "question": RunnablePassthrough()}
-    ).assign(answer=rag_chain_from_docs)
+    llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash-latest", temperature=0.1)
 
-    return rag_chain_with_source
+    memory = ConversationBufferMemory(
+        memory_key="chat_history",
+        return_messages=True,
+        output_key='answer'
+    )
+
+    rag_chain = ConversationalRetrievalChain.from_llm(
+        llm=llm,
+        retriever=retriever,
+        memory=memory,
+        return_source_documents=True,
+        combine_docs_chain_kwargs={"prompt": prompt}
+    )
+
+    return rag_chain

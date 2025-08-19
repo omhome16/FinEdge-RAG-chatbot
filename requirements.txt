@@ -5,3 +5,10 @@ streamlit
 tiktoken
 pypdf
 langchain-community
+langchain-huggingface
+langchain-google-genai
+faiss-cpu
+sentence-transformers
+streamlit
+python-dotenv
+PyMuPDF
