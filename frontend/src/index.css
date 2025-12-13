@@ -1,0 +1,484 @@
+@import "tailwindcss";
+
+/* ============ Fonts ============ */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+/* ============ Base Styles ============ */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Light Mode (Default) - Strict Minimalist B/W */
+:root {
+  color-scheme: light;
+
+  /* Backgrounds */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f8f8;
+  /* Very subtle grey */
+  --bg-tertiary: #f0f0f0;
+
+  /* Text */
+  --text-primary: #000000;
+  --text-secondary: #4a4a4a;
+  --text-muted: #9ca3af;
+
+  /* Borders */
+  --border-subtle: #e5e5e5;
+  --border-strong: #000000;
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+
+  /* Accents (Strategic use only) */
+  --accent-primary: #000000;
+  /* Primary action is black */
+  --accent-text: #ffffff;
+}
+
+/* Dark Mode - Deep Void */
+.dark {
+  color-scheme: dark;
+
+  /* Backgrounds */
+  --bg-primary: #050505;
+  /* Almost true black */
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #141414;
+
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #52525b;
+
+  /* Borders */
+  --border-subtle: #27272a;
+  --border-strong: #ffffff;
+
+  /* Glass */
+  --glass-bg: rgba(10, 10, 10, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+
+  /* Accents */
+  --accent-primary: #ffffff;
+  /* Primary action is white */
+  --accent-text: #000000;
+}
+
+/* ============ Utility Classes for Theme ============ */
+.bg-primary {
+  background-color: var(--bg-primary);
+}
+
+.bg-secondary {
+  background-color: var(--bg-secondary);
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+/* ============ Glassmorphism ============ */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  z-index: 50;
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  /* Slightly tighter radius for professional look */
+  box-shadow: var(--glass-shadow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  /* High contrast border on hover */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.dark .glass-card:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ============ Refined Gradients (Subtle Accents) ============ */
+/* We keep the noise/mesh simple */
+
+.mesh-bg {
+  background-color: var(--bg-primary);
+  background-image:
+    radial-gradient(at 0% 0%, rgba(120, 120, 120, 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(100, 100, 100, 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(80, 80, 80, 0.05) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(120, 120, 120, 0.05) 0px, transparent 50%);
+}
+
+.dark .mesh-bg {
+  background-image:
+    radial-gradient(at 0% 0%, rgba(255, 255, 255, 0.03) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(255, 255, 255, 0.03) 0px, transparent 50%);
+}
+
+/* ============ Button Styles (Minimalist) ============ */
+.btn-primary {
+  background-color: var(--accent-primary);
+  color: var(--accent-text);
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--text-primary);
+  background-color: var(--bg-secondary);
+}
+
+/* ============ Charts Colors (Vibrant Accents) ============ */
+/* These CSS variables are for chart components usage */
+:root {
+  --chart-1: #3b82f6;
+  /* Blue */
+  --chart-2: #8b5cf6;
+  /* Violet */
+  --chart-3: #f43f5e;
+  /* Rose */
+  --chart-4: #10b981;
+  /* Emerald */
+  --chart-5: #f59e0b;
+  /* Amber */
+}
+
+/* ============ Scrollbar ============ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* ============ PDF Viewer Sidebar ============ */
+.pdf-viewer-sidebar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 450px;
+  max-width: 90vw;
+  background: var(--bg-primary);
+  border-left: 1px solid var(--border-subtle);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.dark .pdf-viewer-sidebar {
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.4);
+}
+
+.pdf-viewer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-secondary);
+}
+
+.pdf-viewer-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.pdf-viewer-close {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.pdf-viewer-close:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.pdf-citation-info {
+  padding: 12px 20px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.citation-source {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.citation-source strong {
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.citation-page {
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: var(--bg-tertiary);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.citation-snippet {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.4;
+  padding: 8px;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  border-left: 3px solid var(--accent-primary);
+}
+
+.pdf-viewer-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  gap: 10px;
+}
+
+.page-controls,
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-controls button,
+.zoom-controls button {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.page-controls button:hover:not(:disabled),
+.zoom-controls button:hover:not(:disabled) {
+  background: var(--bg-tertiary);
+  border-color: var(--text-secondary);
+}
+
+.page-controls button:disabled,
+.zoom-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-indicator,
+.zoom-indicator {
+  font-size: 13px;
+  color: var(--text-secondary);
+  min-width: 60px;
+  text-align: center;
+}
+
+.open-external {
+  color: var(--text-secondary);
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.open-external:hover {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+.pdf-viewer-content {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-tertiary);
+}
+
+.pdf-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-secondary);
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border-subtle);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* View Analytics Button in Document List */
+.doc-analytics-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.doc-analytics-btn:hover {
+  background: var(--accent-primary);
+  color: var(--accent-text);
+  border-color: var(--accent-primary);
+}
+
+/* Citation Click Styles */
+.citation-link {
+  cursor: pointer;
+  color: var(--chart-1);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  transition: color 0.2s ease;
+}
+
+.citation-link:hover {
+  color: var(--chart-2);
+}
+
+/* PDF Error State */
+.pdf-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  height: 100%;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 20px;
+}
+
+.pdf-error p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.retry-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--accent-primary);
+  color: var(--accent-text);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.retry-button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.open-external-link {
+  font-size: 12px;
+  color: var(--chart-1);
+  text-decoration: underline;
+}
