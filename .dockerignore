@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Local files
+.env
+.env.local
+*.log
+
+# Test and docs
+tests/
+docs/
+*.md
+!README.md
+
+# Frontend (separate deployment)
+frontend/
+
+# Eval and sample data
+eval/
+data/*.pdf
+data/*.docx
+data/*.xlsx
+
+# Vectorstore (will be created at runtime)
+vectorstore/
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
