@@ -3,6 +3,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recha
 interface PieChartData {
     name: string;
     value: number;
+    [key: string]: string | number;  // Index signature for recharts compatibility
 }
 
 interface PieChartProps {
@@ -28,7 +29,7 @@ export function PieChartComponent({ title, data, colors = defaultColors }: PieCh
                             outerRadius={80}
                             paddingAngle={5}
                             dataKey="value"
-                            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                            label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
                             labelLine={{ stroke: 'rgb(var(--text-muted))' }}
                         >
                             {data.map((_, index) => (

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import {
   Upload, MessageSquare, FileText, Sparkles,
-  Trash2, ArrowRight, Github, Command, Moon, Sun,
-  Search, BarChart2, PieChart, Activity, Eye
+  ArrowRight, Github, Command, Moon, Sun,
+  BarChart2, Activity, Eye
 } from 'lucide-react';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import { MetricCard, BarChartComponent, LineChartComponent, PieChartComponent, DataTable } from './components/charts';
@@ -13,9 +13,7 @@ import {
   getDocuments,
   clearAllDocuments,
   getDocumentAnalytics,
-  type UploadResponse,
   type DocumentInfo,
-  type ChatResponse,
   type AnalyticsResponse,
   type Citation
 } from './api';
