@@ -1,6 +1,6 @@
 # Track datasets
 *.csv filter=lfs diff=lfs merge=lfs
-*.json filter=lfs diff=lfs merge=lfs
+# *.json removed - breaks AWS Amplify deployment
 *.parquet filter=lfs diff=lfs merge=lfs
 *.pdf filter=lfs diff=lfs merge=lfs
 
