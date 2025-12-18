@@ -182,7 +182,7 @@ function AppContent() {
               {documents.length} FILES INDEXED
             </span>
           )}
-          <a href="https://github.com/ai-craftsman" target="_blank" className="text-secondary hover:text-primary transition-colors">
+          <a href="https://github.com/omhome16" target="_blank" className="text-secondary hover:text-primary transition-colors">
             <Github className="w-5 h-5" />
           </a>
           <div className="h-4 w-px bg-border-subtle" />
