@@ -9,6 +9,7 @@ export const FileUploader: React.FC<{ onUploadComplete: () => void }> = ({ onUpl
     const [file, setFile] = useState<File | null>(null);
     const [uploading, setUploading] = useState(false);
     const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const handleDragOver = (e: React.DragEvent) => {
         e.preventDefault();
@@ -36,6 +37,8 @@ export const FileUploader: React.FC<{ onUploadComplete: () => void }> = ({ onUpl
     const handleUpload = async () => {
         if (!file) return;
         setUploading(true);
+        setStatus('idle');
+        setErrorMessage('');
         try {
             await uploadFile(file);
             setStatus('success');
@@ -43,6 +46,7 @@ export const FileUploader: React.FC<{ onUploadComplete: () => void }> = ({ onUpl
         } catch (error) {
             console.error(error);
             setStatus('error');
+            setErrorMessage('Upload failed. Please try again.');
         } finally {
             setUploading(false);
         }
@@ -73,13 +77,14 @@ export const FileUploader: React.FC<{ onUploadComplete: () => void }> = ({ onUpl
                     <div className="flex flex-col items-center text-center">
                         <FileText className="w-12 h-12 text-blue-500 mb-2" />
                         <p className="font-medium text-gray-900">{file.name}</p>
-                        <p className="text-sm text-gray-500">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                        <p className="text-sm text-gray-500">{(file.size / 1024 / 1024).toFixed(4)} MB</p>
                     </div>
                 ) : (
                     <div className="flex flex-col items-center text-center">
                         <Upload className="w-12 h-12 text-gray-400 mb-2" />
                         <p className="font-medium text-gray-700">Click to upload or drag and drop</p>
                         <p className="text-sm text-gray-500">PDF files only</p>
+                        <p className="text-xs text-amber-600 mt-2 font-medium">Note: File size must be less than 120KB, due to processing limitations</p>
                     </div>
                 )}
             </div>
@@ -87,7 +92,7 @@ export const FileUploader: React.FC<{ onUploadComplete: () => void }> = ({ onUpl
             {status === 'error' && (
                 <div className="mt-4 flex items-center text-error bg-error/10 p-3 rounded-lg">
                     <AlertCircle className="w-5 h-5 mr-2" />
-                    <span>Upload failed. Please try again.</span>
+                    <span>{errorMessage || 'Upload failed. Please try again.'}</span>
                 </div>
             )}
 

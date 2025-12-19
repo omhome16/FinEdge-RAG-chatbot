@@ -248,6 +248,7 @@ function AppContent() {
                   <div className="text-center">
                     <p className="text-lg font-medium">Drop document here</p>
                     <p className="text-sm text-secondary mt-1">PDF, Word, Excel supported</p>
+                    <p className="text-xs text-amber-500 mt-2 font-medium">Note: File size must be less than 120KB, due to processing limitations</p>
                   </div>
                 </div>
                 {isUploading && (
