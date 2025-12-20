@@ -11,7 +11,6 @@ import {
   uploadFile,
   chatWithBot,
   getDocuments,
-  clearAllDocuments,
   getDocumentAnalytics,
   type DocumentInfo,
   type AnalyticsResponse,
@@ -115,17 +114,7 @@ function AppContent() {
     }
   };
 
-  const handleClearAll = async () => {
-    if (!confirm('Are you sure you want to delete all documents?')) return;
-    try {
-      await clearAllDocuments();
-      setDocuments([]);
-      setAnalytics(null);
-      setMessages([]);
-    } catch (err) {
-      console.error('Failed to clear');
-    }
-  };
+
 
   // Load analytics for a specific document
   const handleViewAnalytics = async (docId: string) => {
@@ -265,7 +254,6 @@ function AppContent() {
                 <div className="max-w-2xl mx-auto mt-12">
                   <div className="flex items-center justify-between mb-4 border-b border-subtle pb-2">
                     <h3 className="font-mono text-sm text-secondary">INDEXED_FILES</h3>
-                    <button onClick={handleClearAll} className="text-xs text-red-500 hover:underline">CLEAR ALL</button>
                   </div>
                   <div className="space-y-2">
                     {documents.map((doc) => (

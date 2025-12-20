@@ -40,7 +40,8 @@ data/*.docx
 data/*.xlsx
 
 # Vectorstore (will be created at runtime)
-vectorstore/
+# Vectorstore (allowed for deployment)
+# vectorstore/
 
 # Node
 node_modules/

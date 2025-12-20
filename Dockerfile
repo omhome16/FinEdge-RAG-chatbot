@@ -1,7 +1,7 @@
-# FinEdge RAG Backend - AWS Elastic Beanstalk Docker Deployment
+# FinEdge RAG Backend - Docker Deployment
 FROM python:3.11-slim
 
-# Install system dependencies for OCR and PDF processing
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     tesseract-ocr \
     poppler-utils \
@@ -12,29 +12,43 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
-# Copy requirements first (for Docker layer caching)
+# Copy requirements first (for caching)
 COPY requirements.txt .
-
-# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
-COPY src/ ./src/
-COPY backend/ ./backend/
+# Copy the entire project
+COPY . .
 
-# Create necessary directories
+# FIX: Move vectorstore and uploaded from backend/ to app root if they exist there
+# The code expects 'vectorstore' at the root (/app/vectorstore)
+# But locally it might be in 'backend/vectorstore', so we move it.
+RUN if [ -d "backend/vectorstore" ]; then \
+        # If root vectorstore exists, remove it first to avoid conflict, or merge? 
+        # Safest is to use the one from backend if it exists
+        rm -rf vectorstore && \
+        mv backend/vectorstore . && \
+        echo "Moved vectorstore from backend/ to root"; \
+    fi
+
+RUN if [ -d "backend/uploaded" ]; then \
+        rm -rf uploaded && \
+        mv backend/uploaded . && \
+        echo "Moved uploaded from backend/ to root"; \
+    fi
+
+# Ensure directories exist
 RUN mkdir -p /app/uploaded /app/vectorstore /app/data
 
-# Set environment variables
+# Environment variables
 ENV PYTHONPATH=/app
 ENV PORT=8000
 
-# Expose the port
+# Expose port
 EXPOSE 8000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
-# Run the application
+# Start command
 CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
